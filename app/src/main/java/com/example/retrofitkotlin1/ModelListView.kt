@@ -1,10 +1,10 @@
 package com.example.retrofitkotlin1
 
   data class ModelListView(
-    private val name: String,
-    private val email: String,
-    private val city: String
-    //private val id: Int
+     val name: String,
+     val email: String,
+     val city: String
+    //val id: Int
   )
 
 

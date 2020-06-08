@@ -1,8 +1,10 @@
 package com.example.retrofitkotlin1
 
+import android.graphics.LinearGradient
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -12,9 +14,16 @@ import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity() {
 
+    val modelListViewArrayList: ArrayList<ModelListView> = ArrayList()
+    private lateinit var retroAdapter: RetroAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        recycle.layoutManager = LinearLayoutManager(this)
+        retroAdapter = RetroAdapter(modelListViewArrayList)
+
 
  val retrofit = Retrofit.Builder()
      .addConverterFactory(ScalarsConverterFactory.create())
@@ -40,27 +49,33 @@ class MainActivity : AppCompatActivity() {
 
                   val JA  = JSONArray(Jsonresponse)
 
+
                  for(data in 0 until JA.length())
                   {
 
                       val c = JA.getJSONObject(data)
                       val address =  c.getJSONObject("address")
 
-
+                      val modelListView = ModelListView(c.getString("name"),c.getString("email"),address.getString("city"))
 
                     //  val modelListView = ModelListView(c.getString("name"),c.getString("email"),address.getString("city"))
-                      stringBuilder.append(c.getString("name"))
+                    /*  stringBuilder.append(c.getString("name"))
                       stringBuilder.append("\n")
                       stringBuilder.append(c.getString("email"))
                       stringBuilder.append("\n")
                       stringBuilder.append(address.getString("city"))
-                      stringBuilder.append("\n\n")
+                      stringBuilder.append("\n\n")  */
 
+                       modelListViewArrayList.add(modelListView)
 
 
                   }
+                  recycle.adapter = retroAdapter
 
-                  data.text = stringBuilder
+                 // data.text = stringBuilder
+
+
+
 
 
               }
